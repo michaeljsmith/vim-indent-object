@@ -24,12 +24,19 @@
 "
 "--------------------------------------------------------------------------------
 
-onoremap <silent>ai :<C-u>cal TextObject(0, [line("."), line("."), col("."), col(".")])<CR>
-onoremap <silent>ii :<C-u>cal TextObject(1, [line("."), line("."), col("."), col(".")])<CR>
-vnoremap <silent>ai :<C-u>cal TextObject(0, [line("'<"), line("'>"), col("'<"), col("'>")])<CR><Esc>gv
-vnoremap <silent>ii :<C-u>cal TextObject(1, [line("'<"), line("'>"), col("'<"), col("'>")])<CR><Esc>gv
+" Mappings excluding line below.
+onoremap <silent>ai :<C-u>cal TextObject(0, 0, [line("."), line("."), col("."), col(".")])<CR>
+onoremap <silent>ii :<C-u>cal TextObject(1, 0, [line("."), line("."), col("."), col(".")])<CR>
+vnoremap <silent>ai :<C-u>cal TextObject(0, 0, [line("'<"), line("'>"), col("'<"), col("'>")])<CR><Esc>gv
+vnoremap <silent>ii :<C-u>cal TextObject(1, 0, [line("'<"), line("'>"), col("'<"), col("'>")])<CR><Esc>gv
 
-function! TextObjectCount(inner, range, count)
+" Mappings including line below.
+onoremap <silent>aI :<C-u>cal TextObject(0, 1, [line("."), line("."), col("."), col(".")])<CR>
+onoremap <silent>iI :<C-u>cal TextObject(1, 1, [line("."), line("."), col("."), col(".")])<CR>
+vnoremap <silent>aI :<C-u>cal TextObject(0, 1, [line("'<"), line("'>"), col("'<"), col("'>")])<CR><Esc>gv
+vnoremap <silent>iI :<C-u>cal TextObject(1, 1, [line("'<"), line("'>"), col("'<"), col("'>")])<CR><Esc>gv
+
+function! TextObjectCount(inner, incbelow, range, count)
 
 	" Record the current state of the visual region.
 	let l0 = a:range[0]
@@ -73,12 +80,13 @@ function! TextObjectCount(inner, range, count)
 		endwhile
 
 		" Determine which of these extensions to include. Include neither if
-		" we are selecting an 'inner' object.
+		" we are selecting an 'inner' object. Exclude the bottom unless are
+		" told to include it.
 		let idnt2 = max([indent(l_1), indent(l2)])
 		if indent(l_1) < idnt2 || a:inner
 			let l_1 = l_1o
 		endif
-		if indent(l2) < idnt2 || a:inner
+		if indent(l2) < idnt2 || a:inner || !a:incbelow
 			let l2 = l2o
 		endif
 		let l_1 = max([l_1, 1])
@@ -129,6 +137,6 @@ function! TextObjectCount(inner, range, count)
 
 endfunction
 
-function! TextObject(inner, range)
-	call TextObjectCount(a:inner, a:range, v:count1)
+function! TextObject(inner, incbelow, range)
+	call TextObjectCount(a:inner, a:incbelow, a:range, v:count1)
 endfunction
