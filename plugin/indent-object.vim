@@ -50,22 +50,26 @@ function! TextObjectCount(inner, range, count)
 		endwhile
 
 		" Search backward for the first line with less indent than the target
-		" indent.
+		" indent (skipping blank lines).
 		let l_1 = l0
 		let l_1o = l_1
-		while l_1 > 0 && indent(l_1) >= idnt
+		let blnk = 0
+		while l_1 > 0 && ((idnt == 0 && !blnk) || (idnt != 0 && (blnk || indent(l_1) >= idnt)))
 			let l_1o = l_1
 			let l_1 -= 1
+			let blnk = getline(l_1) =~ "^\\s*$"
 		endwhile
 
 		" Search forward for the first line with more indent than the target
-		" indent.
+		" indent (skipping blank lines).
 		let line_cnt = line("$")
 		let l2 = l1
 		let l2o = l2
-		while l2 <= line_cnt && indent(l2) >= idnt
+		let blnk = 0
+		while l2 <= line_cnt && ((idnt == 0 && !blnk) || (idnt != 0 && (blnk || indent(l2) >= idnt)))
 			let l2o = l2
 			let l2 += 1
+			let blnk = getline(l2) =~ "^\\s*$"
 		endwhile
 
 		" Determine which of these extensions to include. Include neither if
