@@ -25,18 +25,18 @@
 "--------------------------------------------------------------------------------
 
 " Mappings excluding line below.
-onoremap <silent>ai :<C-u>cal TextObject(0, 0, [line("."), line("."), col("."), col(".")])<CR>
-onoremap <silent>ii :<C-u>cal TextObject(1, 0, [line("."), line("."), col("."), col(".")])<CR>
-vnoremap <silent>ai :<C-u>cal TextObject(0, 0, [line("'<"), line("'>"), col("'<"), col("'>")])<CR><Esc>gv
-vnoremap <silent>ii :<C-u>cal TextObject(1, 0, [line("'<"), line("'>"), col("'<"), col("'>")])<CR><Esc>gv
+onoremap <silent>ai :<C-u>cal <Sid>TextObject(0, 0, [line("."), line("."), col("."), col(".")])<CR>
+onoremap <silent>ii :<C-u>cal <Sid>TextObject(1, 0, [line("."), line("."), col("."), col(".")])<CR>
+vnoremap <silent>ai :<C-u>cal <Sid>TextObject(0, 0, [line("'<"), line("'>"), col("'<"), col("'>")])<CR><Esc>gv
+vnoremap <silent>ii :<C-u>cal <Sid>TextObject(1, 0, [line("'<"), line("'>"), col("'<"), col("'>")])<CR><Esc>gv
 
 " Mappings including line below.
-onoremap <silent>aI :<C-u>cal TextObject(0, 1, [line("."), line("."), col("."), col(".")])<CR>
-onoremap <silent>iI :<C-u>cal TextObject(1, 1, [line("."), line("."), col("."), col(".")])<CR>
-vnoremap <silent>aI :<C-u>cal TextObject(0, 1, [line("'<"), line("'>"), col("'<"), col("'>")])<CR><Esc>gv
-vnoremap <silent>iI :<C-u>cal TextObject(1, 1, [line("'<"), line("'>"), col("'<"), col("'>")])<CR><Esc>gv
+onoremap <silent>aI :<C-u>cal <Sid>TextObject(0, 1, [line("."), line("."), col("."), col(".")])<CR>
+onoremap <silent>iI :<C-u>cal <Sid>TextObject(1, 1, [line("."), line("."), col("."), col(".")])<CR>
+vnoremap <silent>aI :<C-u>cal <Sid>TextObject(0, 1, [line("'<"), line("'>"), col("'<"), col("'>")])<CR><Esc>gv
+vnoremap <silent>iI :<C-u>cal <Sid>TextObject(1, 1, [line("'<"), line("'>"), col("'<"), col("'>")])<CR><Esc>gv
 
-function! TextObjectCount(inner, incbelow, range, count)
+function! <Sid>TextObjectCount(inner, incbelow, range, count)
 
 	" Record the current state of the visual region.
 	let l0 = a:range[0]
@@ -138,6 +138,6 @@ function! TextObjectCount(inner, incbelow, range, count)
 
 endfunction
 
-function! TextObject(inner, incbelow, range)
+function! <Sid>TextObject(inner, incbelow, range)
 	call TextObjectCount(a:inner, a:incbelow, a:range, v:count1)
 endfunction
