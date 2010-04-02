@@ -67,6 +67,8 @@ function! <Sid>TextObject(inner, incbelow, vis, range, count)
 			let pnb = prevnonblank(l0)
 			if pnb
 				let idnt = max([idnt, indent(pnb)])
+				let l0 = pnb
+				let c0 = 1
 			endif
 			let nnb = nextnonblank(l0)
 			if nnb
