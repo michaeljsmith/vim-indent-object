@@ -133,10 +133,13 @@ function! <Sid>TextObject(inner, incbelow, vis, range, count)
 		let c_1 = 1
 		if a:inner
 			let c_1 = match(getline(l_1), "\\S") + 1
+			let c0 = c_1
 		endif
 		let c2 = len(getline(l2))
 		if !a:inner
 			let c2 += 1
+		else
+			let c1 = c2
 		endif
 
 		" Check whether the visual region has changed.
