@@ -150,7 +150,7 @@ function! <Sid>TextObject(inner, incbelow, vis, range, count)
 		" of the text in the line.
 		let c_1 = 1
 		if a:inner
-			let c_1 = match(getline(l_1), "\\S") + 1
+			let c_1 = match(getline(l_1), "\\c\\S") + 1
 		endif
 		let c2 = len(getline(l2))
 		if !a:inner
@@ -160,7 +160,7 @@ function! <Sid>TextObject(inner, incbelow, vis, range, count)
 		" Make sure there's no change if we haven't really made a
 		" significant change in linewise mode - this makes sure that
 		" we can iteratively increase selection in linewise mode.
-		if itr_cnt == 0 && vismode == 'V' && s:l0 == l_1 && s:l1 == l2
+		if itr_cnt == 0 && vismode ==# 'V' && s:l0 == l_1 && s:l1 == l2
 			let c_1 = s:c0
 			let c2 = s:c1
 		endif
@@ -172,7 +172,7 @@ function! <Sid>TextObject(inner, incbelow, vis, range, count)
 		let chg = chg || s:c0 != c_1
 		let chg = chg || s:c1 != c2
 
-		if vismode == 'V' && new_vis
+		if vismode ==# 'V' && new_vis
 			let chg = 1
 		endif
 
