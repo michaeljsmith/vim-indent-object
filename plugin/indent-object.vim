@@ -134,6 +134,7 @@ function! TextObjectCount(inner, incbelow, range, count)
 	call cursor(l0, c0)
 	normal! v
 	call cursor(l1, c1)
+	normal! l
 
 endfunction
 
