@@ -118,7 +118,7 @@ function! <Sid>TextObject(inner, incbelow, vis, range, count)
 
 		" Extend the columns to the start and end.
 		let c_1 = 1
-		let c2 = len(getline(l2))
+		let c2 = len(getline(l2)) + 1
 
 		" Check whether the visual region has changed.
 		let chg = 0
@@ -163,7 +163,6 @@ function! <Sid>TextObject(inner, incbelow, vis, range, count)
 	endif
 	exe "normal! " . m
 	call cursor(l1, c1)
-	normal! l
 
 endfunction
 
