@@ -82,7 +82,9 @@ function! <Sid>TextObject(inner, incbelow, vis, range, count)
 		let l_1o = l_1
 		let blnk = getline(l_1) =~ "^\\s*$"
 		while l_1 > 0 && ((idnt == 0 && !blnk) || (idnt != 0 && (blnk || indent(l_1) >= idnt)))
-			let l_1o = l_1
+			if !blnk || !a:inner
+				let l_1o = l_1
+			endif
 			let l_1 -= 1
 			let blnk = getline(l_1) =~ "^\\s*$"
 		endwhile
@@ -94,7 +96,9 @@ function! <Sid>TextObject(inner, incbelow, vis, range, count)
 		let l2o = l2
 		let blnk = getline(l2) =~ "^\\s*$"
 		while l2 <= line_cnt && ((idnt == 0 && !blnk) || (idnt != 0 && (blnk || indent(l2) >= idnt)))
-			let l2o = l2
+			if !blnk || !a:inner
+				let l2o = l2
+			endif
 			let l2 += 1
 			let blnk = getline(l2) =~ "^\\s*$"
 		endwhile
