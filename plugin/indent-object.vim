@@ -79,6 +79,12 @@ function! <Sid>TextObject(inner, incbelow, vis, range, count)
 			if nnb
 				let idnt = max([idnt, indent(nnb)])
 			endif
+
+			" If we are in whitespace at the beginning of a block, skip over
+			" it when we are selecting the range.
+			if idnt > indent(pnb)
+				let l_1 = nnb
+			endif
 		endif
 
 		" Search backward for the first line with less indent than the target
@@ -122,7 +128,7 @@ function! <Sid>TextObject(inner, incbelow, vis, range, count)
 		" of the text in the line.
 		let c_1 = 1
 		if a:inner
-			let c_1 = match(getline(line(".")), "\\S") + 1
+			let c_1 = match(getline(l_1), "\\S") + 1
 		endif
 		let c2 = len(getline(l2))
 		if !a:inner
@@ -154,11 +160,8 @@ function! <Sid>TextObject(inner, incbelow, vis, range, count)
 			if l0 == 0
 				return
 			endif
-			let c0 -= 1
-			if c0 == 0
-				let l0 -= 1
-				let c0 = len(getline(l0))
-			endif
+			let l0 -= 1
+			let c0 = len(getline(l0))
 		endif
 
 	endwhile
