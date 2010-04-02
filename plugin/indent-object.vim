@@ -156,6 +156,9 @@ function! <Sid>TextObject(inner, incbelow, vis, range, count)
 			let c2 += 1
 		endif
 
+		" Make sure there's no change if we haven't really made a
+		" significant change in linewise mode - this makes sure that
+		" we can iteratively increase selection in linewise mode.
 		if vismode == 'V' && s:l0 == l_1 && s:l1 == l2
 			let c_1 = s:c0
 			let c2 = s:c1
@@ -200,11 +203,19 @@ function! <Sid>TextObject(inner, incbelow, vis, range, count)
 	call cursor(s:l0, s:c0)
 	exe "normal! " . vismode
 	call cursor(s:l1, s:c1)
-	if vismode == 'V'
-		normal l
-	else
-		normal! o
-	endif
+	normal! o
+
+	" Update these static variables - we need to keep these up-to-date between
+	" invocations because it's the only way we can detect whether it's a new
+	" visual mode. We need to know if it's a new visual mode because otherwise
+	" if there's a single line block in visual line mode and we select it with
+	" "V", we can't tell whether it's already been selected using Vii.
+	exe "normal! \<Esc>"
+	let s:l0 = line("'<")
+	let s:l1 = line("'>")
+	let s:c0 = col("'<")
+	let s:c1 = col("'>")
+	normal gv
 
 endfunction
 
