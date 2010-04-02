@@ -68,7 +68,7 @@ However, in other languages, such as Vim scripts, control structures are
 usually terminated with something like 'endif'. Therefore, in this example:
 >
       if foo > 3
-         echo "foo is big"
+         echo "foo is big" *
          let foo = 3
       endif
       call do_something_else()
