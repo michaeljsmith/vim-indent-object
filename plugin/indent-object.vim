@@ -81,9 +81,13 @@ function! <Sid>TextObject(inner, incbelow, vis, range, count)
 			endif
 
 			" If we are in whitespace at the beginning of a block, skip over
-			" it when we are selecting the range.
+			" it when we are selecting the range. Similarly, if we are in
+			" whitespace at the end, ignore it.
 			if idnt > indent(pnb)
 				let l_1 = nnb
+			endif
+			if idnt > indent(nnb)
+				let l2 = pnb
 			endif
 		endif
 
