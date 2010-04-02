@@ -25,18 +25,18 @@
 "--------------------------------------------------------------------------------
 
 " Mappings excluding line below.
-onoremap <silent>ai :<C-u>cal <Sid>TextObject(0, 0, [line("."), line("."), col("."), col(".")])<CR>
-onoremap <silent>ii :<C-u>cal <Sid>TextObject(1, 0, [line("."), line("."), col("."), col(".")])<CR>
-vnoremap <silent>ai :<C-u>cal <Sid>TextObject(0, 0, [line("'<"), line("'>"), col("'<"), col("'>")])<CR><Esc>gv
-vnoremap <silent>ii :<C-u>cal <Sid>TextObject(1, 0, [line("'<"), line("'>"), col("'<"), col("'>")])<CR><Esc>gv
+onoremap <silent>ai :<C-u>cal <Sid>HandleTextObjectMapping(0, 0, 0, [line("."), line("."), col("."), col(".")])<CR>
+onoremap <silent>ii :<C-u>cal <Sid>HandleTextObjectMapping(1, 0, 0, [line("."), line("."), col("."), col(".")])<CR>
+vnoremap <silent>ai :<C-u>cal <Sid>HandleTextObjectMapping(0, 0, 1, [line("'<"), line("'>"), col("'<"), col("'>")])<CR><Esc>gv
+vnoremap <silent>ii :<C-u>cal <Sid>HandleTextObjectMapping(1, 0, 1, [line("'<"), line("'>"), col("'<"), col("'>")])<CR><Esc>gv
 
 " Mappings including line below.
-onoremap <silent>aI :<C-u>cal <Sid>TextObject(0, 1, [line("."), line("."), col("."), col(".")])<CR>
-onoremap <silent>iI :<C-u>cal <Sid>TextObject(1, 1, [line("."), line("."), col("."), col(".")])<CR>
-vnoremap <silent>aI :<C-u>cal <Sid>TextObject(0, 1, [line("'<"), line("'>"), col("'<"), col("'>")])<CR><Esc>gv
-vnoremap <silent>iI :<C-u>cal <Sid>TextObject(1, 1, [line("'<"), line("'>"), col("'<"), col("'>")])<CR><Esc>gv
+onoremap <silent>aI :<C-u>cal <Sid>HandleTextObjectMapping(0, 1, 0, [line("."), line("."), col("."), col(".")])<CR>
+onoremap <silent>iI :<C-u>cal <Sid>HandleTextObjectMapping(1, 1, 0, [line("."), line("."), col("."), col(".")])<CR>
+vnoremap <silent>aI :<C-u>cal <Sid>HandleTextObjectMapping(0, 1, 1, [line("'<"), line("'>"), col("'<"), col("'>")])<CR><Esc>gv
+vnoremap <silent>iI :<C-u>cal <Sid>HandleTextObjectMapping(1, 1, 1, [line("'<"), line("'>"), col("'<"), col("'>")])<CR><Esc>gv
 
-function! <Sid>TextObjectCount(inner, incbelow, range, count)
+function! <Sid>TextObject(inner, incbelow, vis, range, count)
 
 	" Record the current state of the visual region.
 	let l0 = a:range[0]
@@ -130,14 +130,19 @@ function! <Sid>TextObjectCount(inner, incbelow, range, count)
 
 	endwhile
 
-	" Apply the range we have found.
+	" Apply the range we have found. Use mode() to use same visual mode
+	" that was active when we entered the mapping, if there was one.
 	call cursor(l0, c0)
-	normal! v
+	let m = "v"
+	if a:vis
+		let m = visualmode() 
+	endif
+	exe "normal! " . m
 	call cursor(l1, c1)
 	normal! l
 
 endfunction
 
-function! <Sid>TextObject(inner, incbelow, range)
-	call TextObjectCount(a:inner, a:incbelow, a:range, v:count1)
+function! <Sid>HandleTextObjectMapping(inner, incbelow, vis, range)
+	call <Sid>TextObject(a:inner, a:incbelow, a:vis, a:range, v:count1)
 endfunction
