@@ -62,6 +62,7 @@ function! <Sid>TextObject(inner, incbelow, vis, range, count)
 	let s:c1 = a:range[3]
 
 	" Repeatedly increase the scope of the selection.
+	let itr_cnt = 0
 	let cnt = a:count
 	while cnt > 0
 
@@ -159,7 +160,7 @@ function! <Sid>TextObject(inner, incbelow, vis, range, count)
 		" Make sure there's no change if we haven't really made a
 		" significant change in linewise mode - this makes sure that
 		" we can iteratively increase selection in linewise mode.
-		if vismode == 'V' && s:l0 == l_1 && s:l1 == l2
+		if itr_cnt == 0 && vismode == 'V' && s:l0 == l_1 && s:l1 == l2
 			let c_1 = s:c0
 			let c2 = s:c1
 		endif
@@ -196,6 +197,8 @@ function! <Sid>TextObject(inner, incbelow, vis, range, count)
 			let s:l0 -= 1
 			let s:c0 = len(getline(s:l0))
 		endif
+
+		let itr_cnt += 1
 
 	endwhile
 
