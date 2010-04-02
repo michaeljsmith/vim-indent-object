@@ -59,6 +59,12 @@ function! <Sid>TextObject(inner, incbelow, vis, range, count)
 			let l += 1
 		endwhile
 
+		" Keep track of where the range should be expanded to.
+		let l_1 = l0
+		let l_1o = l_1
+		let l2 = l1
+		let l2o = l2
+
 		" If we are highlighting only blank lines, we may not have found a
 		" valid indent. In this case we need to look for the next and previous
 		" non blank lines and check which of those has the largest indent.
@@ -67,8 +73,7 @@ function! <Sid>TextObject(inner, incbelow, vis, range, count)
 			let pnb = prevnonblank(l0)
 			if pnb
 				let idnt = max([idnt, indent(pnb)])
-				let l0 = pnb
-				let c0 = 1
+				let l_1 = pnb
 			endif
 			let nnb = nextnonblank(l0)
 			if nnb
@@ -78,8 +83,6 @@ function! <Sid>TextObject(inner, incbelow, vis, range, count)
 
 		" Search backward for the first line with less indent than the target
 		" indent (skipping blank lines).
-		let l_1 = l0
-		let l_1o = l_1
 		let blnk = getline(l_1) =~ "^\\s*$"
 		while l_1 > 0 && ((idnt == 0 && !blnk) || (idnt != 0 && (blnk || indent(l_1) >= idnt)))
 			if !blnk || !a:inner
@@ -92,8 +95,6 @@ function! <Sid>TextObject(inner, incbelow, vis, range, count)
 		" Search forward for the first line with more indent than the target
 		" indent (skipping blank lines).
 		let line_cnt = line("$")
-		let l2 = l1
-		let l2o = l2
 		let blnk = getline(l2) =~ "^\\s*$"
 		while l2 <= line_cnt && ((idnt == 0 && !blnk) || (idnt != 0 && (blnk || indent(l2) >= idnt)))
 			if !blnk || !a:inner
