@@ -49,18 +49,36 @@ function! <Sid>TextObject(inner, incbelow, vis, range, count)
 	while cnt > 0
 
 		" Look for the minimum indentation in the current visual region.
-		let idnt = 1000
 		let l = l0
+		let idnt_invalid = 1000
+		let idnt = idnt_invalid
 		while l <= l1
-			let idnt = min([idnt, indent(l)])
+			if !(getline(l) =~ "^\\s*$")
+				let idnt = min([idnt, indent(l)])
+			endif
 			let l += 1
 		endwhile
+
+		" If we are highlighting only blank lines, we may not have found a
+		" valid indent. In this case we need to look for the next and previous
+		" non blank lines and check which of those has the largest indent.
+		if idnt == idnt_invalid
+			let idnt = 0
+			let pnb = prevnonblank(l0)
+			if pnb
+				let idnt = max([idnt, indent(pnb)])
+			endif
+			let nnb = nextnonblank(l0)
+			if nnb
+				let idnt = max([idnt, indent(nnb)])
+			endif
+		endif
 
 		" Search backward for the first line with less indent than the target
 		" indent (skipping blank lines).
 		let l_1 = l0
 		let l_1o = l_1
-		let blnk = 0
+		let blnk = getline(l_1) =~ "^\\s*$"
 		while l_1 > 0 && ((idnt == 0 && !blnk) || (idnt != 0 && (blnk || indent(l_1) >= idnt)))
 			let l_1o = l_1
 			let l_1 -= 1
@@ -72,7 +90,7 @@ function! <Sid>TextObject(inner, incbelow, vis, range, count)
 		let line_cnt = line("$")
 		let l2 = l1
 		let l2o = l2
-		let blnk = 0
+		let blnk = getline(l2) =~ "^\\s*$"
 		while l2 <= line_cnt && ((idnt == 0 && !blnk) || (idnt != 0 && (blnk || indent(l2) >= idnt)))
 			let l2o = l2
 			let l2 += 1
