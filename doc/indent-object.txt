@@ -49,9 +49,9 @@ count can be used to achieve the same effect.
 The difference between |ai| and |aI| is that |ai| includes the line
 immediately above the indentation block, whereas aI includes not only that,
 but also the line below. Which of these is most useful largely depends on the
-structure of the language being editted.
+structure of the language being edited.
 
-For example, when editting the Python code, |ai| is generally more useful, as
+For example, when editing the Python code, |ai| is generally more useful, as
 the line above the indentation block is usually related to it. For example, in
 the following code (* is used to indicate the cursor position):
 >
