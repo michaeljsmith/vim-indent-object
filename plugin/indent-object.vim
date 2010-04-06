@@ -44,10 +44,7 @@ let s:c1 = -1
 function! <Sid>TextObject(inner, incbelow, vis, range, count)
 
 	" Record the current state of the visual region.
-	let vismode = "v"
-	if a:vis
-		let vismode = visualmode() 
-	endif
+	let vismode = "V"
 
 	" Detect if this is a completely new visual selction session.
 	let new_vis = 0
