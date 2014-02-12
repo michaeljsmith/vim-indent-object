@@ -215,7 +215,7 @@ function! <Sid>TextObject(inner, incbelow, vis, range, count)
 	let s:l1 = line("'>")
 	let s:c0 = col("'<")
 	let s:c1 = col("'>")
-	normal gv
+	normal! gv
 
 endfunction
 
