@@ -114,7 +114,7 @@ function! <Sid>TextObject(inner, incbelow, vis, range, count)
         " indent (skipping blank lines).
         let blnk = getline(l_1) =~ "^\\s*$"
         while l_1 > 0 && (blnk || indent(l_1) >= idnt)
-            if exists("g:indent_object_except_first_level") && idnt == 0 && blnk
+            if g:indent_object_except_first_level && idnt == 0 && blnk
                 break
             endif
             if !blnk || !a:inner
@@ -129,7 +129,7 @@ function! <Sid>TextObject(inner, incbelow, vis, range, count)
         let line_cnt = line("$")
         let blnk = getline(l2) =~ "^\\s*$"
         while l2 <= line_cnt && (blnk || indent(l2) >= idnt)
-            if exists("g:indent_object_except_first_level") && idnt == 0 && blnk
+            if g:indent_object_except_first_level && idnt == 0 && blnk
                 break
             endif
             if !blnk || !a:inner
