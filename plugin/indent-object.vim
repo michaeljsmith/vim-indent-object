@@ -42,7 +42,7 @@ let s:c0 = -1
 let s:c1 = -1
 
 if !exists("g:indent_object_except_first_level")
-   let g:indent_object_except_first_level = 0
+   let g:indent_object_except_first_level = 1
 endif
 
 function! <Sid>TextObject(inner, incbelow, vis, range, count)
