@@ -117,7 +117,7 @@ function! <Sid>TextObject(inner, incbelow, vis, range, count)
 		" Search backward for the first line with less indent than the target
 		" indent.
 		let blnk = getline(l_1) =~ "^\\s*$"
-		while l_1 > 0 && (g:indent_object_ignore_blank_line || indent(l_1) >= idnt)
+		while l_1 > 0 && (( g:indent_object_ignore_blank_line && blnk ) || indent(l_1) >= idnt)
 			if g:indent_object_except_first_level && idnt == 0 && blnk
 				break
 			endif
@@ -132,7 +132,7 @@ function! <Sid>TextObject(inner, incbelow, vis, range, count)
 		" indent.
 		let line_cnt = line("$")
 		let blnk = getline(l2) =~ "^\\s*$"
-		while l2 <= line_cnt && (g:indent_object_ignore_blank_line || indent(l2) >= idnt)
+		while l2 <= line_cnt && (( g:indent_object_ignore_blank_line && blnk ) || indent(l2) >= idnt)
 			if g:indent_object_except_first_level && idnt == 0 && blnk
 				break
 			endif
