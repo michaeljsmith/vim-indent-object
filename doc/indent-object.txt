@@ -92,6 +92,12 @@ This exceptional behaviour can be disabled by executing the following line
 <
 (default is 1)
 
+Also, blank line behaviour can be disabled by executing the following lne
+>
+      :let g:indent_object_ignore_blank_line = 0
+<
+(default is 1)
+
 
 ==============================================================================
 ABOUT                                                          *indtobj-about*
